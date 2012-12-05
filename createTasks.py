@@ -134,7 +134,7 @@ if __name__ == "__main__":
         app.info['tutorial'] = open('tutorial.html').read()
 
         pbclient.update_app(app)
-        with open('PabloPh_UN_latest.csv', 'rb') as csvfile:
+        with open('PabloPh_latest_UN_051212_5_38PM.csv', 'rb') as csvfile:
             csvreader = csv.reader(csvfile, delimiter=',')
             # Each row has the following format
             # tweetid,
@@ -147,9 +147,10 @@ if __name__ == "__main__":
                     task_info = task_formatter(app_config, row, options.n_answers)
                     pbclient.create_task(app.id, task_info)
     else:
+        app = pbclient.find_app(short_name=app_config['short_name'])[0]
         if options.add_more_tasks:
             import csv
-            with open('PabloPh_UN_latest.csv', 'rb') as csvfile:
+            with open('PabloPh_latest_UN_051212_5_38PM.csv', 'rb') as csvfile:
                 csvreader = csv.reader(csvfile, delimiter=',')
                 # Each row has the following format
                 # tweetid,
