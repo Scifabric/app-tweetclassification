@@ -1,0 +1,7 @@
+{
+    "name": "Philippines Typhoon",
+    "short_name": "philippinestyphoon",
+    "thumbnail": "http://farm7.staticflickr.com/6008/5953980175_ec9e9680fa_q.jpg",
+    "description": "Classifying tweets about Typhoon Pablo",
+    "question": "Please tag the following tweet based on the category or categories that best describes the link(s) included in the tweet"
+}

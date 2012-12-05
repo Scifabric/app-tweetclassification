@@ -1,0 +1,58 @@
+<div class="row">
+    <div class="span12">
+        <div id="modal" class="modal hide fade">
+            <div class="modal-header">
+                <h3>Philipphiines Typhoon tutorial</h3>
+            </div>
+            <div id="0" class="modal-body" style="display:none">
+                <p><strong>Hi!</strong> Thanks a lot for helping us in classifying the tweets collected on Typhoon Pablo.
+               </p> 
+            </div>
+            <div id="1" class="modal-body" style="display:none">
+                <p>The application is really simple. It loads a tweet and asks you to classify the links that you could find in it.</p>
+                <p>There are 4 possible categories:
+                <ul>
+                    <li><strong><i class="icon-picture"></i> Picture:</strong> link points to picture(s) of general damage/flooding</li>
+                    <li><strong><i class="icon-film"></i> Video:</strong> link points to video(s) of general damage/flooding </li>
+                    <li><strong><i class="icon-globe"></i> Location:</strong> tweet/picture/video includes reference to location, place, town etc.</li> 
+                    <li><strong>Other:</strong> link <strong>does not point</strong> to picture(s) of general damage/flooding </li>
+                </ul>
+                </p>
+                <p>If you <strong>find a link</strong>, click on it in and it will open itself in a different tab or window, <strong>check the information</strong> in the tab/window and <strong>see in which category fits</strong>. If the link is related to one of the previous categories, you will have to paste the link in input box.</p>
+                <p>That's all!</p>
+            </div>
+            <div class="modal-footer">
+                <a id="prevBtn" href="#" onclick="showStep('prev')" class="btn">Previous</a>
+                <a id="nextBtn" href="#" onclick="showStep('next')" class="btn btn-success">Next</a>
+                <a id="startContrib" href="../philippinestyphoon/newtask" class="btn btn-primary" style="display:none"><i class="icon-thumbs-up"></i> Start classifying!</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var step = -1;
+    function showStep(action) {
+        $("#" + step).hide();
+        if (action == 'next') {
+            step = step + 1;
+        }
+        if (action == 'prev') {
+            step = step - 1;
+        }
+        if (step == 0) {
+            $("#prevBtn").hide();
+        }
+        else {
+            $("#prevBtn").show();
+        }
+
+        if (step == 1 ) {
+            $("#nextBtn").hide();
+            $("#startContrib").show();
+        }
+        $("#" + step).show();
+    }
+
+    showStep('next');
+    $("#modal").modal('show');
+</script>
