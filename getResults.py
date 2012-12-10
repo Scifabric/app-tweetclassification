@@ -30,6 +30,7 @@ if __name__ == "__main__":
                       metavar="CREATE-APP")
 
     parser.add_option("-v", "--verbose", action="store_true", dest="verbose")
+    parser.add_option("-c", "--completed", action="store_true", dest="completed")
     
     (options, args) = parser.parse_args()
 
@@ -48,39 +49,122 @@ if __name__ == "__main__":
        print('Using API-KEY: %s' % options.api_key)
 
     if (options.results):
+        offset=0
+        limit=100
+
         app = pbclient.find_app(short_name='philippinestyphoon')[0]
-        completed_tasks = pbclient.find_tasks(app.id, state="completed", offset=0,limit=500)
+        if options.completed: 
+            completed_tasks = pbclient.find_tasks(app.id, state="completed", offset=offset,limit=limit)
+        else:
+            completed_tasks = pbclient.find_tasks(app.id,offset=offset,limit=limit)
 
         # Now get the task runs
         import csv
         f = csv.writer(open("results.csv", "wb"))
-        for t in completed_tasks:
-            print t.id
-            answers = pbclient.find_taskruns(app.id, task_id=int(t.id))
-            f.writerow(['tweetid',
-                        'text',
-                        'date',
-                        'username',
-                        'userid',
-                        'picture',
-                        'pictureLink',
-                        'video',
-                        'videoLink',
-                        'location',
-                        'locationRef',
-                        'other',
-                ])
-            for a in answers:
-                f.writerow([str(t.info['tweetid']).encode('utf-8','ignore'),
-                            t.info['text'].encode('utf-8','ignore'),
-                            str(t.info['date']).encode('utf-8','ignore'),
-                            str(t.info['username']).encode('utf-8','ignore'),
-                            str(t.info['userid']).encode('utf-8','ignore'),
-                            str(a.info['picture']).encode('utf-8','ignore'),
-                            str(a.info['pictureLink']).encode('utf-8','ignore'),
-                            str(a.info['video']).encode('utf-8','ignore'),
-                            str(a.info['videoLink']).encode('utf-8','ignore'),
-                            str(a.info['location']).encode('utf-8','ignore'),
-                            str(a.info['locationRef']).encode('utf-8','ignore'),
-                            str( a.info['other']).encode('utf-8', 'ignore'),
-                    ])
+        f.writerow(['taskid',
+                    'tweetid',
+                    'text',
+                    'date',
+                    'username',
+                    'userid',
+                    'picture',
+                    'pictureLink',
+                    'video',
+                    'videoLink',
+                    'location',
+                    'locationRef',
+                    'other',
+            ])
+
+        while completed_tasks:
+            for t in completed_tasks:
+                print t.id
+                answers = pbclient.find_taskruns(app.id, task_id=int(t.id))
+                for a in answers:
+                    line = []
+
+                    if t.id:
+                        line.append(t.id)
+                    else:
+                        line.append("")
+
+                    if t.info['tweetid']:
+                        line.append(t.info['tweetid'].encode('utf-8', 'ignore'))
+                    else:
+                        line.append("")
+
+                    if t.info['text']:
+                        line.append(t.info['text'].encode('utf-8', 'ignore'))
+                    else:
+                        line.append("")
+
+                    if t.info['date']:
+                        line.append(t.info['date'].encode('utf-8', 'ignore'))
+                    else:
+                        line.append("")
+
+                    if t.info['username']:
+                        line.append(t.info['username'].encode('utf-8', 'ignore'))
+                    else:
+                        line.append("")
+
+                    if t.info['userid']:
+                        line.append(t.info['userid'].encode('utf-8', 'ignore'))
+                    else:
+                        line.append("")
+
+                    if a.info['picture']:
+                        line.append(a.info['picture'])
+                    else:
+                        line.append(0)
+
+                    if a.info['pictureLink']:
+                        line.append(a.info['pictureLink'].encode('utf-8', 'ignore'))
+                    else:
+                        line.append("")
+
+                    if a.info['video']:
+                        line.append(a.info['video'])
+                    else:
+                        line.append(0)
+
+                    if a.info['videoLink']:
+                        line.append(a.info['videoLink'].encode('utf-8', 'ignore'))
+                    else:
+                        line.append("")
+
+                    if a.info['location']:
+                        line.append(a.info['location'])
+                    else:
+                        line.append(0)
+
+                    if a.info['locationRef']:
+                        line.append(a.info['locationRef'].encode('utf-8', 'ignore'))
+                    else:
+                        line.append("")
+
+                    if a.info['other']:
+                        line.append(a.info['other'])
+                    else:
+                        line.append(0)
+
+
+                    #f.writerow([str(t.info['tweetid']).encode('utf-8','ignore'),
+                    #            t.info['text'].encode('utf-8','ignore'),
+                    #            str(t.info['date']).encode('utf-8','ignore'),
+                    #            str(t.info['username']).encode('utf-8','ignore'),
+                    #            str(t.info['userid']).encode('utf-8','ignore'),
+                    #            str(a.info['picture']).encode('utf-8','ignore'),
+                    #            str(a.info['pictureLink']).encode('utf-8','ignore'),
+                    #            str(a.info['video']).encode('utf-8','ignore'),
+                    #            str(a.info['videoLink']).encode('utf-8','ignore'),
+                    #            str(a.info['location']).encode('utf-8','ignore'),
+                    #            str(a.info['locationRef']).encode('utf-8','ignore'),
+                    #            str( a.info['other']).encode('utf-8', 'ignore'),
+                    #    ])
+                    f.writerow(line)
+            offset = offset + limit
+            if options.completed: 
+                completed_tasks = pbclient.find_tasks(app.id, state="completed", offset=offset,limit=limit)
+            else:
+                completed_tasks = pbclient.find_tasks(app.id,offset=offset,limit=limit)
