@@ -55,7 +55,7 @@ if __name__ == "__main__":
     usage = "usage: %prog [options]"
     parser = OptionParser(usage)
     # URL where PyBossa listens
-    parser.add_option("-u", "--url", dest="api_url",
+    parser.add_option("-s", "--server", dest="api_url",
                       help="PyBossa URL http://domain.com/", metavar="URL")
     # API-KEY
     parser.add_option("-k", "--api-key", dest="api_key",
@@ -74,7 +74,7 @@ if __name__ == "__main__":
                      )
 
     # Update tasks question
-    parser.add_option("-q", "--update-tasks", action="store_true",
+    parser.add_option("-q", "--update-tasks",
                       dest="update_tasks",
                       help="Update Tasks question",
                       metavar="UPDATE-TASKS"
@@ -172,11 +172,24 @@ if __name__ == "__main__":
         pbclient.update_app(app)
 
     if options.update_tasks:
-        print "Updating task question"
+        print "Updating task n_answers"
         app = pbclient.find_app(short_name=app_config['short_name'])[0]
-        for task in pbclient.get_tasks(app.id):
-            task.info['question'] = u'Ves un humano?'
-            pbclient.update_task(task)
+        n_tasks = 0
+        offset = 0
+        limit = 100
+        tasks = pbclient.get_tasks(app.id,offset=offset,limit=limit)
+        while tasks:
+            for task in tasks:
+                print "Updating task: %s" % task.id
+                if ('n_answers' in task.info.keys()):
+                    del(task.info['n_answers'])
+                task.n_answers = int(options.update_tasks)
+                pbclient.update_task(task)
+                n_tasks += 1
+            offset = (offset + limit)
+            tasks = pbclient.get_tasks(app.id,offset=offset,limit=limit)
+        print "%s Tasks have been updated!" % n_tasks
+
 
     if not options.create_app and not options.update_template\
             and not options.add_more_tasks and not options.update_tasks:
