@@ -18,6 +18,7 @@
 
 from optparse import OptionParser
 import pbclient
+import json
 if __name__ == "__main__":
     # Arguments for the application
     usage = "usage: %prog [options]"
@@ -73,6 +74,7 @@ if __name__ == "__main__":
                     'videoLink',
                     'location',
                     'locationRef',
+                    'geojson',
                     'other',
             ])
 
@@ -143,25 +145,17 @@ if __name__ == "__main__":
                     else:
                         line.append("")
 
+                    if 'loc' in a.info.keys():
+                        tmp = json.dumps(a.info['loc'])
+                        line.append(tmp.encode('utf-8', 'ignore'))
+                    else:
+                        line.append("")
+
                     if a.info['other']:
                         line.append(a.info['other'])
                     else:
                         line.append(0)
 
-
-                    #f.writerow([str(t.info['tweetid']).encode('utf-8','ignore'),
-                    #            t.info['text'].encode('utf-8','ignore'),
-                    #            str(t.info['date']).encode('utf-8','ignore'),
-                    #            str(t.info['username']).encode('utf-8','ignore'),
-                    #            str(t.info['userid']).encode('utf-8','ignore'),
-                    #            str(a.info['picture']).encode('utf-8','ignore'),
-                    #            str(a.info['pictureLink']).encode('utf-8','ignore'),
-                    #            str(a.info['video']).encode('utf-8','ignore'),
-                    #            str(a.info['videoLink']).encode('utf-8','ignore'),
-                    #            str(a.info['location']).encode('utf-8','ignore'),
-                    #            str(a.info['locationRef']).encode('utf-8','ignore'),
-                    #            str( a.info['other']).encode('utf-8', 'ignore'),
-                    #    ])
                     f.writerow(line)
             offset = offset + limit
             if options.completed: 
