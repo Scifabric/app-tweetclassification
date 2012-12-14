@@ -2,7 +2,7 @@
     <div class="span12">
         <div id="modal" class="modal hide fade">
             <div class="modal-header">
-                <h3>Philipphiines Typhoon tutorial</h3>
+                <h3>Philipphines Typhoon tutorial</h3>
             </div>
             <div id="0" class="modal-body" style="display:none">
                 <p><strong>Hi!</strong> Thanks a lot for helping us in classifying the tweets collected on Typhoon Pablo.
@@ -19,6 +19,31 @@
                 </ul>
                 </p>
                 <p>If you <strong>find a link</strong>, click on it in and it will open itself in a different tab or window, <strong>check the information</strong> in the tab/window and <strong>see in which category fits</strong>. If the link is related to one of the previous categories, you will have to paste the link in input box.</p>
+            </div>
+            <div id="2" class="modal-body" style="display:none">
+                <p>If <strong>you find a reference to a location</strong>, you will be able to <strong>place it in a map</strong></p>
+                <img src="http://i.imgur.com/a4GSI.png"/>
+            </div>
+            <div id="3" class="modal-body" style="display:none">
+                <p>Usually you will: 
+                <ul>
+                    <li>find the <strong>name of the city</strong></li>
+                    <li><strong>paste it in the input field</strong> and</li>
+                    <li><strong>click in the search button</strong> <a href="#" class="btn"><i class="icon-search"></i> Search</a></li>
+                </ul>
+                </p>
+                <img src="http://i.imgur.com/L58w1.png"/>
+                <hr>
+                <p>The map will search that location and add a blue marker, then <strong>you have to place a marker in the position that the tweet is referencing</strong>.</p>
+                <p>To place the marker: 
+                <ul>
+                    <li><strong>click in the button</strong>: <a href="#" class="btn btn-inverse"><i class="icon-map-marker"></i> Add damage/impact marker</a></li>
+                    <li><strong>hover the mouse to place it at the location</strong> (a <strong>green typhoon</strong> marker will appear)</li>
+                    <li><strong>click to set the coordinates</strong></li>
+                </ul>
+                <span class="label label-info"><i class="icon-bullhorn"></i>Tip:</span> If you need to fix the position you can drag and drop it again.
+                </p>
+                <p>Once you have chosen one of the categories, click in the <strong>Submit classification</strong> button and you will have classified one tweet.</p>
                 <p>That's all!</p>
             </div>
             <div class="modal-footer">
@@ -46,7 +71,7 @@
             $("#prevBtn").show();
         }
 
-        if (step == 1 ) {
+        if (step == 3 ) {
             $("#nextBtn").hide();
             $("#startContrib").show();
         }
